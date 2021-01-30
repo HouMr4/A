@@ -4,8 +4,8 @@ import { Loading } from 'element-ui'
 import QS from 'qs'
 
 const request = axios.create({
-    baseURL: 'http://admintest.happymmall.com/',
-    timeout: 10000
+    baseURL: '/api',
+    timeout: 10000,
 })
 
 //创建loading加载

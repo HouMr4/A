@@ -8,8 +8,8 @@
     <div class="content">
       <div class="content-top">
         <el-select
-          v-model="value"
-          placeholder="请选择"
+          v-model="cha"
+          placeholder="按商品id查询"
         >
           <el-option
             v-for="item in options"
@@ -20,34 +20,77 @@
           </el-option>
         </el-select>
         <el-input
-          v-model="input"
+          v-model="product"
           placeholder="关键词"
         ></el-input>
-        <el-button>查询</el-button>
+        <el-button @click="search()">查询</el-button>
       </div>
       <div class="content-content">
-        <!-- <el-table
-          :data="tableData"
+        <el-table
+          :data="list"
+          stripe
           style="width: 100%"
         >
           <el-table-column
-            prop="date"
-            label="日期"
+            prop="id"
+            label="id"
             width="180"
           >
           </el-table-column>
           <el-table-column
             prop="name"
-            label="姓名"
+            label="信息"
             width="180"
           >
           </el-table-column>
           <el-table-column
-            prop="address"
-            label="地址"
+            prop="price"
+            label="价格"
+            width="180"
           >
           </el-table-column>
-        </el-table> -->
+          <el-table-column
+            label="状态"
+            width="180"
+          >
+            <template slot-scope="scope">
+              {{scope.row.status===1?'在售':'已下架'}}
+              <el-button
+                class="anniu"
+                @click="huan(scope.row)"
+              >
+                {{scope.row.status===1?'下架':'上架'}}
+              </el-button>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="address"
+            label="操作"
+          >
+            <template slot-scope="scope2">
+              <el-button
+                size="mini"
+                @click="chakan(scope2.row)"
+                class="but"
+              >查看</el-button>
+              <el-button
+                size="mini"
+                @click="bick(scope2.row)"
+                class="but"
+              >编辑</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          layout="prev, pager, next"
+          :total="1000"
+          :page-size="100"
+          :current-page="pageNum"
+        >
+        </el-pagination>
       </div>
     </div>
 
@@ -64,15 +107,15 @@ export default {
     return {
       list: [],
       options: [{
-        value: '选项1',
+        value: 'a',
         label: '按商品id查询'
       }, {
-        value: '选项2',
+        value: 'b',
         label: '按商品名称查询'
       }],
-      value: '',
-      input: '',
+      cha: '',
       pageNum: 1,
+      product: '',
     };
   },
   //监听属性 类似于data概念
@@ -81,15 +124,80 @@ export default {
   watch: {},
   //方法集合
   methods: {
-
+    async huan(i) {
+      console.log(i);
+      if (i.status === 1) {
+        let params = {
+          productId: i.id,
+          status: 2
+        }
+        let { data: res } = await this.$http.status(params)
+        console.log(res);
+      } else {
+        let params = {
+          productId: i.id,
+          status: 1
+        }
+        let { data: res } = await this.$http.status(params)
+        console.log(res);
+      }
+      this.menu()
+    },
+    chakan(i) {
+      this.$router.push({
+        path: '/product/detail',
+        query: {
+          id: i.id
+        }
+      })
+    },
+    bick(i) {
+      this.$router.push({
+        path: '/home/modityemit',
+        query: {
+          id: i.id
+        }
+      })
+    },
+    async search() {
+      if (this.cha == 'b') {
+        let params = {
+          pageNum: this.pageNum,
+          product: this.product
+        }
+        let { data: res } = await this.$http.search2(params)
+        console.log(res);
+        this.list = res.list
+      } else {
+        let params = {
+          pageNum: this.pageNum,
+          productId: this.product
+        }
+        let { data: res } = await this.$http.search(params)
+        console.log(res);
+        this.list = res.list
+      }
+    },
+    async menu() {
+      let params = {
+        pageNum: this.pageNum
+      }
+      let { data: res } = await this.$http.product(params)
+      console.log(res);
+      this.list = res.list
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.pageNum = val
+      this.menu()
+    }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  async created() {
-    let params = {
-      pageNum: this.pageNum
-    }
-    let { data: res } = await this.$http.product(params)
-    console.log(res);
+  created() {
+    this.menu()
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {

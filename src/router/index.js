@@ -39,12 +39,18 @@ const routes = [
             name: 'index',
             component: () => import('../views/menu/productcategory.vue')
           },
+
         ]
       },
       {
         path: '/order/index',
         component: () => import('../views/menu/order.vue')
-      }
+      },
+      {
+        path: '/product/detail',
+        name: 'index',
+        component: () => import('../views/menu/detail.vue')
+      },
     ]
   },
 

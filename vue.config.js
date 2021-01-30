@@ -1,6 +1,6 @@
 // vue.config.js
 module.exports = {
-    lintOnSave: true,
+    lintOnSave: false,
     publicPath: './',
     productionSourceMap: false, //不输出map文件
     devServer: {
@@ -9,11 +9,12 @@ module.exports = {
         proxy: {
             'api': {
                 //请求源地址
-                target: `http://admintest.happymmall.com/`,
+                target: `http://admintest.happymmall.com`,
                 //是否跨域
+                ws: true,
                 changeOrigin: true,
                 pathRewrite: {
-                    ['^' + '/api']: ''
+                    '^/api': ''
                 }
             }
         }
