@@ -9,36 +9,35 @@
         <p>商品描述{{list.subtitle}}</p>
         <p>当前状态{{list.status===1?'在售':'已下架'}}</p>
         <p>所属分类
-          <el-dropdown trigger="click">
-            <el-button type="primary">
-              请选择一级品类<i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item
-                v-for="(item,index) in xiala1"
-                :key="index"
-              >{{item.name}}</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <el-dropdown>
-            <el-button type="primary">
-              请选择二级品类<i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item
-                v-for="(item,index) in xiala2"
-                :key="index"
-              >{{item.name}}</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+          <el-select
+            v-model="value1"
+            placeholder="请选择一级"
+          >
+            <el-option
+              v-for="item in xiala2"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+          <el-select
+            v-model="value2"
+            placeholder="请选择二级"
+          >
+            <el-option
+              v-for="item in xiala1"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
         </p>
         <p>商品价格{{list.price}}元</p>
         <p>商品库存{{list.stock }}</p>
-        <p>商品图片<img
-            :src='list.mainImage'
-            alt=""
-          ></p>
-        <p>商品详情{{list.detail}}</p>
+        <p>商品图品</p>
+        <p>商品详情<span v-html="list.detail"></span></p>
       </div>
     </div>
   </div>
@@ -57,6 +56,8 @@ export default {
       categoryId: 0,
       xiala1: [],
       xiala2: [],
+      value1: "",
+      value2: "",
     };
   },
   //监听属性 类似于data概念
@@ -78,7 +79,7 @@ export default {
     async fenlei2() {
       console.log(this.list.categoryId);
       let params = {
-        categoryId: this.list.categoryId
+        categoryId: 0
       }
       let { data: res } = await this.$http.fenlei1(params)
       console.log(res);
@@ -124,7 +125,6 @@ export default {
   line-height: 50px;
   text-align: left;
   width: 100%;
-  background: red;
 }
 .content {
   text-align: left;
@@ -136,5 +136,13 @@ export default {
 }
 .el-dropdown-item {
   overflow: hidden;
+}
+.tu {
+  width: 50px;
+  height: 50px;
+  img {
+    width: 50px;
+    height: 50px;
+  }
 }
 </style>

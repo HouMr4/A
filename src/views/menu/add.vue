@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="top">
-      <h1>商品管理--修改商品</h1>
+      <h1>商品管理--添加商品</h1>
     </div>
     <div class="content">
       <el-form
@@ -10,15 +10,22 @@
         label-width="80px"
       >
         <el-form-item label="商品名称">
-          <el-input v-model="list.name"></el-input>
+          <el-input
+            placeholder="请输入商品名称"
+            v-model="list.name"
+          ></el-input>
         </el-form-item>
         <el-form-item label="商品描述">
-          <el-input v-model="list.subtitle"></el-input>
+          <el-input
+            placeholder="请输入商品描述"
+            v-model="list.subtitle"
+          ></el-input>
         </el-form-item>
         <el-form-item label="所属分类">
           <el-select
             v-model="value1"
             placeholder="请选择一级"
+            @change="fenlei1"
           >
             <el-option
               v-for="item1 in xiala2"
@@ -42,10 +49,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="商品价格">
-          <el-input v-model="list.price"></el-input>
+          <el-input
+            placeholder="价格"
+            v-model="list.price"
+          ></el-input>
         </el-form-item>
         <el-form-item label="商品库存">
-          <el-input v-model="list.stock"></el-input>
+          <el-input
+            placeholder="库存"
+            v-model="list.stock"
+          ></el-input>
         </el-form-item>
         <el-form-item label="商品图片">
           <el-upload
@@ -100,16 +113,7 @@ export default {
     tijiao() {
       this.$router.push('/product/index')
     },
-    async menu() {
-      let params = {
-        productId: this.$route.query.id
-      }
-      let { data: res } = await this.$http.detail(params)
-      console.log(res);
-      this.list = res;
-      this.fenlei1()
-      this.fenlei2()
-    },
+
     //一级
     async fenlei2() {
       console.log(this.list.categoryId);
@@ -123,16 +127,17 @@ export default {
     //二级
     async fenlei1() {
       let params = {
-        categoryId: this.list.parentCategoryId
+        categoryId: this.value1
       }
       let { data: res } = await this.$http.fenlei1(params)
       console.log(res);
       this.xiala1 = res
     },
+
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    this.menu()
+    this.fenlei2()
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {

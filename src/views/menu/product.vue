@@ -3,7 +3,10 @@
 
     <div class="top">
       <h1>商品管理</h1>
-      <el-button type="primary">添加商品</el-button>
+      <el-button
+        @click="add()"
+        type="primary"
+      >添加商品</el-button>
     </div>
     <div class="content">
       <div class="content-top">
@@ -124,6 +127,9 @@ export default {
   watch: {},
   //方法集合
   methods: {
+    add() {
+      this.$router.push('/product/add')
+    },
     async huan(i) {
       console.log(i);
       if (i.status === 1) {
@@ -153,7 +159,7 @@ export default {
     },
     bick(i) {
       this.$router.push({
-        path: '/home/modityemit',
+        path: '/product/save',
         query: {
           id: i.id
         }
