@@ -25,6 +25,11 @@ const routes = [
         component: () => import('../views/menu/index.vue')
       },
       {
+        path: '/add2',
+        name: 'add2',
+        component: () => import('../views/menu/add2.vue')
+      },
+      {
         path: '/product',
         name: 'product',
         component: () => import('../views/menu/product.vue'),
@@ -34,12 +39,6 @@ const routes = [
             name: 'index',
             component: () => import('../views/menu/product.vue')
           },
-          {
-            path: '/product.category/index',
-            name: 'index',
-            component: () => import('../views/menu/productcategory.vue')
-          },
-
         ]
       },
       {
@@ -60,6 +59,16 @@ const routes = [
         path: '/product/add',
         name: 'index',
         component: () => import('../views/menu/add.vue')
+      },
+      {
+        path: '/product.category/index',
+        name: 'index',
+        component: () => import('../views/menu/category.vue')
+      },
+      {
+        path: '/zi',
+        name: 'zi',
+        component: () => import('../views/menu/zi.vue')
       },
     ]
   },

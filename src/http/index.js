@@ -24,5 +24,11 @@ export default {
     },
     status(params = "") {
         return http.get(api.status + 'productId=' + params.productId + '&status=' + params.status)
+    },
+    xiugai(params = "") {
+        return http.get(api.xiugai + 'categoryId=' + params.categoryId + '&categoryName=' + params.categoryName, params)
+    },
+    add2(params = "") {
+        return http.get(api.add2 + 'parentId=' + params.parentId + '&categoryName=' + params.categoryName, params)
     }
 }
